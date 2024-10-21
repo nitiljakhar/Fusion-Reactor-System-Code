@@ -186,6 +186,6 @@ This project is licensed under the MIT License.
 
 <h2>Founder</h2>
 <b>Nitil Jakhar</b><br>
-<b>nitiljakhar1904jacs@gmail.com</b><br>
+<b><code>E-mail</code>: nitiljakhar1904jacs@gmail.com</b><br>
 <b>Computer Science Engineer</b><br>
 <b>Chandigarh University, Mohali, India</b><br>
