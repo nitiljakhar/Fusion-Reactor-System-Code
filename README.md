@@ -1,62 +1,97 @@
-Fusion Reactor System GUI
+<h1>Fusion Reactor System Code</h1>
+<h3>GUI</h3> 
 This Python program provides a graphical user interface (GUI) to manage a fusion reactor system code. It allows users to select various parameters for different subsystems (like Figures of Merit, Constraints, Build variables, etc.) through an interactive menu and checkboxes. The GUI is built using the Tkinter library.
 
-Features
-Modular Parameter Selection:
+ <h2>Features</h2>
+ <ul>
+      <li><b>Modular Parameter Selection:</b>
+            <ul>
+                <li>Supports selection for Figures of Merit, Constraints, Build Variables, and more.</li>
+                <li>Enables 1D and 2D scans for input data.
+</li>
+            </ul>
+      </li>
+      <li><b>Search and Replace:</b>
+            <ul>
+                <li>Find specific text and replace it with new values within the main text editor.</li>
+            </ul>
+      </li>
+      <li><b>Scrollable Checkbox Menus:</b>
+            <ul>
+                <li>Parameter selection is available via checkboxes for various modules, allowing easy toggling of options.</li>
+            </ul>
+      </li>
+      <li><b>Dynamic Update:</b>
+            <ul>
+                <li>Updates the state of checkboxes dynamically based on changes in the text box content.</li>
+            </ul>
+      </li>
+      <li><b>Shortcut Support:</b>
+            <ul>
+                <li>Keyboard shortcuts are included for search <code>(Ctrl+F)</code> and replace <code>(Ctrl+H)</code>.</li>
+            </ul>
+      </li>
+      <li><b>Summary and Execute:</b>
+            <ul>
+                <li>Two main buttons are available to summarize selected options and execute the final command.</li>
+            </ul>
+      </li>  
+</ul>
 
-Supports selection for Figures of Merit, Constraints, Build Variables, and more.
-Enables 1D and 2D scans for input data.
-Search and Replace:
-
-Find specific text and replace it with new values within the main text editor.
-Scrollable Checkbox Menus:
-
-Parameter selection is available via checkboxes for various modules, allowing easy toggling of options.
-Dynamic Update:
-
-Updates the state of checkboxes dynamically based on changes in the text box content.
-Shortcut Support:
-
-Keyboard shortcuts are included for search (Ctrl+F) and replace (Ctrl+H).
-Summary and Execute:
-
-Two main buttons are available to summarize selected options and execute the final command.
-Installation
-Prerequisites:
-
-Python 3.x
-Tkinter library (typically pre-installed with Python)
-Clone the Repository:
-
-bash
-Copy code
-git clone https://github.com/yourusername/fusion-reactor-gui.git
-cd fusion-reactor-gui
-Run the Program:
-
-bash
-Copy code
-python3 fusion_gui.py
-Usage Instructions
-Main Menu
+<h2>Installation</h2>
+ <ul>
+      <li><b>Prerequisites:</b>
+            <ul>
+                <li>Python 3.</li>
+                <li>Tkinter library (typically pre-installed with Python)</li>
+            </ul>
+      </li>
+      <li><b>Search and Replace:</b>
+            <ul>
+                <li><code>git clone https://github.com/yourusername/fusion-reactor-gui.git
+cd fusion-reactor-gui</code></li>
+            </ul>
+      </li>
+      <li><b>Run the Program:</b>
+            <ul>
+                <li><code>python3 fusion_gui.py</code></li>
+            </ul>
+      </li> 
+</ul>
+<h2>Usage Instructions</h2>
+<h4>Main Menu</h4>
 Once the GUI starts, you'll see a menu bar at the top of the window. Here's what each menu option provides:
-
-File:
-
-Open: Opens an existing input file.
-Save: Saves the current configuration.
-Save As: Saves the current configuration under a new file name.
-Search and Replace: Opens a window to search for specific text and optionally replace it in the main text box.
-Exit: Closes the application.
-Figure-of-Merit:
-
-Opens a checkbox window to select the desired Figures-of-Merit (FoM).
-Constraint:
-
-Opens a window to select constraint values.
-Iteration:
-
-Opens a window to choose iteration options.
+<li><b>File:</b>
+<ul>
+              <li><code>Open</code>: Opens an existing input file.</li>
+              <li><code>Save</code>: Saves the current configuration.</li>
+              <li><code>Save As</code>: Saves the current configuration under a new file name.</li>
+              <li><code>Search and Replace</code>: Opens a window to search for specific text and optionally replace it in the main text box.</li>
+              <li><code>Exit</code>: Closes the application.</li>
+</ul>
+<li><b>Figure-of-Merit:</b>
+<ul>
+              <li>Opens a checkbox window to select the desired Figures-of-Merit (FoM).</li>
+</ul>
+<li><b>Constraint:</b>
+<ul>
+              <li>Opens a window to select constraint values.</li>
+</ul>
+<li><b>Iteration:</b>
+<ul>
+              <li>Opens a window to choose iteration options.</li>
+</ul>
+<li><b>Figure-of-Merit:</b>
+<ul>
+<li><b>1D:</b>
+<ul>
+              <li>Select a parameter to sweep and enter the values as a comma-separated list..</li>
+</ul>
+<li><b>2D:</b>
+<ul>
+              <li>Choose two parameters to sweep in 2D and enter the values for both as comma-separated lists.</li>
+</ul>
+  <ul>
 Scan Module
 This menu handles sweeping parameters for 1D and 2D scans:
 
