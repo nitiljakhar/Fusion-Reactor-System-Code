@@ -54,7 +54,7 @@ cd Fusion-Reactor-System-Code</code></li>
       </li>
       <li><b>Run the Program:</b>
             <ul>
-                <li><code>python3 fusion_gui.py</code></li>
+                <li><code>python3 System_code.py</code></li>
             </ul>
       </li> 
 </ul>
