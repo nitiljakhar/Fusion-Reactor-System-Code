@@ -185,7 +185,7 @@ Feel free to fork the repository, make modifications, and send a pull request. C
 This project is licensed under the MIT License.
 
 <h2>Founder</h2>
-<b>Nitil Jakhar</b>
-<b>nitiljakhar1904jacs@gmail.com</b>
-<b>Computer Science Engineer</b>
-<b>Chandigarh University, Mohali, India</b>
+<b>Nitil Jakhar</b><br>
+<b>nitiljakhar1904jacs@gmail.com</b><br>
+<b>Computer Science Engineer</b><br>
+<b>Chandigarh University, Mohali, India</b><br>
