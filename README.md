@@ -82,7 +82,7 @@ Once the GUI starts, you'll see a menu bar at the top of the window. Here's what
               <li>Opens a window to choose iteration options.</li>
 </ul>
 
-<h2>Scan Module</h2>
+<h4>Scan Module</h4>
 This menu handles sweeping parameters for 1D and 2D scans:
 <li><b>1D:</b>
 <ul>
@@ -93,7 +93,7 @@ This menu handles sweeping parameters for 1D and 2D scans:
               <li>Choose two parameters to sweep in 2D and enter the values for both as comma-separated lists.</li>
 </ul>
 
-<h2>Variable Selection (Various Modules)</h2>
+<h4>Variable Selection (Various Modules)</h4>
 The menu also offers various categories to select from:
 <li><b>Build:</b>
 <ul>
@@ -148,13 +148,13 @@ The menu also offers various categories to select from:
               <li>Set parameters for the toroidal field (TF) coil.</li>
 </ul>
 
-<h2>Text Box and Scrollbar</h2>
+<h4>Text Box and Scrollbar</h4>
 The main area is a text box where:
 <li>The results of your selections will appear.</li>
 <li>You can manually enter or modify text.</li>
 <li>A vertical scrollbar allows you to navigate the content easily.</li>
 
-<h2>Footer Buttons</h2>
+<h4>Footer Buttons</h4>
 <li><code>Summary</code>: This button provides a summary of the current selections and displays them in the text area.</li>
 <li><code>Execute</code>: Executes the selected configuration.</li>
 
