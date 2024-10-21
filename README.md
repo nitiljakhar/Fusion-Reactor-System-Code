@@ -155,8 +155,8 @@ The main area is a text box where:
 <li>A vertical scrollbar allows you to navigate the content easily.</li>
 
 <h4>Footer Buttons</h4>
-<li><code>Summary</code>: This button provides a summary of the current selections and displays them in the text area.</li>
-<li><code>Execute</code>: Executes the selected configuration.</li>
+<li><code>Execute</code>: Executes the DAT file in WSl Command (f'process -i "{file_name}"') .</li>
+<li><code>Summary</code>: Executes WSl Command (f'./plot_proc.py -f "{file_name}_MFILE.DAT"') to open the Summery Document Of the Execute command outcomes.</li>
 
 
 <h2>Detailed Features</h2>
