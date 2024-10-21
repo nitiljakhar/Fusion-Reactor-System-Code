@@ -48,8 +48,8 @@ This Python program provides a graphical user interface (GUI) to manage a fusion
       </li>
       <li><b>Search and Replace:</b>
             <ul>
-                <li><code>git clone https://github.com/yourusername/fusion-reactor-gui.git
-cd fusion-reactor-gui</code></li>
+                <li><code>git clone https://github.com/nitiljakhar/Fusion-Reactor-System-Code.git
+cd Fusion-Reactor-System-Code</code></li>
             </ul>
       </li>
       <li><b>Run the Program:</b>
