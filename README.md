@@ -156,7 +156,7 @@ The main area is a text box where:
 
 <h4>Footer Buttons</h4>
 <li><code>Execute</code>: Executes the DAT file in WSl Command (f'process -i "{file_name}"') .</li>
-<li><code>Summary</code>: Executes WSl Command (f'./plot_proc.py -f "{file_name}_MFILE.DAT"') to open the Summery Document Of the Execute command outcomes.</li>
+<li><code>Summary</code>: Executes WSl Command (f'./plot_proc.py -f "{file_name}_MFILE.DAT"') to open the summery document of the "Execute" command outcomes.</li>
 
 
 <h2>Detailed Features</h2>
