@@ -1,41 +1,16 @@
 import tkinter as tk
-from tkinter import filedialog, Text, messagebox, ttk, PhotoImage, scrolledtext
+from tkinter.scrolledtext import ScrolledText
 import os
+
+from tkinter import filedialog, Text, messagebox, simpledialog, ttk
 import subprocess
 import threading
-
-#Initializing the File Path at Moment is None
-current_file_path = None
-
-#Setting up the Font Size
-font_size = 12
-
-# Unified state tracking for all checkboxes (FOM, Constraints, and others)
-checkbox_states = {
-    'FOM': {},
-    'Constraint': {},
-    'Iteration' : {},
-    'Build' : {},
-    'Constraint_variable' : {},
-    'Cost_variables' : {},
-    'Current_drive' : {},
-    'Divertor_values' : {},
-    'Fwbs' : {},
-    'Heat_transport' : {}, 
-    'IR' : {},
-    'Numerics' : {},
-    'CS_pf' : {},
-    'Physics' : {},
-    'Pulse' : {}, 
-    'Tf_coil': {},
-}
-
 
 #Functionalits of File Command
 #Save File Command Function
 def save():
     global current_file_path
-    data = textbox.get("1.0", tk.END).strip()
+    data = text_box.get("1.0", tk.END).strip()
     if data:
         if current_file_path:
             save_to_path(current_file_path)
@@ -58,7 +33,7 @@ def save_as():
 #Save file fath Function Specifications 
 def save_to_path(path):
     global current_file_path
-    data = textbox.get("1.0", tk.END).strip()
+    data = text_box.get("1.0", tk.END).strip()
     with open(path, 'w') as file:
         file.write(data)
     current_file_path = path
@@ -71,54 +46,100 @@ def open_file():
         with open(file_path, 'r') as file:
             data = file.read()
         
-        textbox.delete("1.0", tk.END)  # Clear previous content
-        textbox.insert(tk.END, data)
+        text_box.delete("1.0", tk.END)  # Clear previous content
+        text_box.insert(tk.END, data)
         current_file_path = file_path
     else:
         messagebox.showwarning("Cancelled", "Open operation cancelled.")
 
-#Search andd replace
-def search_and_replace():
-    search_window = tk.Toplevel(root)
-    search_window.title("Search and Replace")
-    
-    tk.Label(search_window, text="Find:").grid(row=0, column=0, padx=5, pady=5)
-    search_entry = tk.Entry(search_window, width=30)
-    search_entry.grid(row=0, column=1, padx=5, pady=5)
-    
-    tk.Label(search_window, text="Replace:").grid(row=1, column=0, padx=5, pady=5)
-    replace_entry = tk.Entry(search_window, width=30)
-    replace_entry.grid(row=1, column=1, padx=5, pady=5)
-    
-    def find():
-        textbox.tag_remove("highlight", "1.0", tk.END)
-        search_text = search_entry.get()
-        if search_text:
-            idx = "1.0"
-            while True:
-                idx = textbox.search(search_text, idx, nocase=1, stopindex=tk.END)
-                if not idx:
-                    break
-                end_idx = f"{idx}+{len(search_text)}c"
-                textbox.tag_add("highlight", idx, end_idx)
-                idx = end_idx
-            textbox.tag_config("highlight", background="yellow")
-    
-    def replace():
-        search_text = search_entry.get()
-        replace_text = replace_entry.get()
-        content = textbox.get("1.0", tk.END)
-        new_content = content.replace(search_text, replace_text)
-        textbox.delete("1.0", tk.END)
-        textbox.insert(tk.END, new_content)
-        find()
+def toggle_night_mode():
+    """Toggle between light and night mode."""
+    global night_mode
+    if night_mode:
+        root.config(bg="white")
+        text_box.config(bg="white", fg="black", insertbackground="black")
+        night_mode = False
+    else:
+        root.config(bg="black")
+        text_box.config(bg="black", fg="white", insertbackground="white")
+        night_mode = True
 
-    tk.Button(search_window, text="Find", command=find).grid(row=2, column=0, padx=5, pady=5)
-    tk.Button(search_window, text="Replace", command=replace).grid(row=2, column=1, padx=5, pady=5)
+def undo_action():
+    """Undo the last action in the text box."""
+    try:
+        if text_box.edit_modified():
+            text_box.edit_undo()
+            text_box.edit_modified(False)
+        else:
+            messagebox.showinfo("Info", "Nothing to undo.")
+    except Exception as e:
+        messagebox.showinfo("Info", f"Undo error: {e}")
 
-# Function to handle key press event for 'Ctrl+F' and 'Ctrl+H'
-def handle_shortcut(event):
-    search_and_replace()
+def redo_action():
+    """Redo the last undone action in the text box."""
+    try:
+        text_box.edit_redo()
+    except Exception:
+        messagebox.showinfo("Info", "Nothing to redo.")
+
+def find_text():
+    """Find text in the text box."""
+    search_term = simpledialog.askstring("Find", "Enter text to find:")
+    if search_term:
+        start = text_box.search(search_term, 1.0, stopindex=tk.END)
+        if start:
+            end = f"{start}+{len(search_term)}c"
+            text_box.tag_add("highlight", start, end)
+            text_box.tag_config("highlight", background="yellow", foreground="black")
+            text_box.mark_set("insert", start)
+            text_box.see(start)
+        else:
+            messagebox.showinfo("Find", "Text not found.")
+
+def find_and_replace():
+    """Find and replace text in the text box."""
+    search_term = simpledialog.askstring("Find and Replace", "Enter text to find:")
+    replace_term = simpledialog.askstring("Find and Replace", "Enter replacement text:")
+    if search_term and replace_term:
+        content = text_box.get(1.0, tk.END)
+        new_content = content.replace(search_term, replace_term)
+        text_box.delete(1.0, tk.END)
+        text_box.insert(tk.END, new_content)
+
+def zoom_in():
+    """Increase the font size in the text box."""
+    current_font_size = text_box.cget("font").split()[1]
+    new_size = int(current_font_size) + 2
+    text_box.config(font=("Arial", new_size))
+
+def zoom_out():
+    """Decrease the font size in the text box."""
+    current_font_size = text_box.cget("font").split()[1]
+    new_size = max(int(current_font_size) - 2, 8)
+    text_box.config(font=("Arial", new_size))
+
+
+# Unified state tracking for all checkboxes (FOM, Constraints, and others)
+checkbox_states = {
+    'FOM': {},
+    'Constraint': {},
+    'Iteration' : {},
+    'Build' : {},
+    'Constraint_variable' : {},
+    'Cost_variables' : {},
+    'Current_drive' : {},
+    'Divertor_values' : {},
+    'Fwbs' : {},
+    'Heat_transport' : {}, 
+    'IR' : {},
+    'Numerics' : {},
+    'CS_pf' : {},
+    'Physics' : {},
+    'Pulse' : {}, 
+    'Tf_coil': {},
+}
+
+
 
 def execute_command():
     global current_file_path
@@ -127,22 +148,20 @@ def execute_command():
 
     # Create a new window for displaying messages
     custom_box = tk.Toplevel()
+    custom_box.title("Command Execution")
     
     # Create a ScrolledText widget that expands and fills the window
-    text_area = scrolledtext.ScrolledText(custom_box, wrap=tk.WORD, width=120, height=30)
+    text_area = ScrolledText(custom_box, wrap=tk.WORD, width=120, height=30)
     text_area.config(state=tk.NORMAL)  # Make the text writable so we can insert output
     text_area.pack(padx=10, pady=10, expand=True, fill='both')  # Allow the text area to expand and fill the window
 
     # Placeholder message variable or calculate based on actual content
     message = "Example"  # You should replace this with actual content length or use a default value
 
-
-
     if current_file_path:
         # Extracting just the file name from the current file path
         file_name = os.path.basename(current_file_path)
         
-
         # Command to execute, using WSL
         command = f'process -i "{file_name}"'
 
@@ -153,6 +172,11 @@ def execute_command():
             text_area.config(state=tk.DISABLED)  # Make the text_area read-only again
             text_area.yview(tk.END)  # Scroll to the end to show the latest output
             custom_box.update_idletasks()  # Ensure the UI updates immediately
+
+        # Function to display the close button after execution
+        def display_close_button():
+            close_button = tk.Button(custom_box, text="Close", command=custom_box.destroy, padx=10, pady=5, bg="red", fg="white")
+            close_button.pack(pady=10, side=tk.BOTTOM)  # Add the button to the footer
 
         # Open command prompt and execute the command in WSL
         try:
@@ -170,8 +194,13 @@ def execute_command():
             if remaining_error:
                 update_output(f"Errors:\n{remaining_error}")
 
+            # Display the close button after execution is complete
+            display_close_button()
+
         except Exception as e:
             update_output(f"An unexpected error occurred: {e}\n")
+            display_close_button()
+
     else:
         messagebox.showwarning("No File", "No file is currently open or saved.")
 
@@ -182,7 +211,7 @@ def summary_command():
     custom_box = tk.Toplevel()
     
     # Create a ScrolledText widget that expands and fills the window
-    text_area = scrolledtext.ScrolledText(custom_box, wrap=tk.WORD, width=120, height=30)
+    text_area = ScrolledText(custom_box, wrap=tk.WORD, width=120, height=30)
     text_area.config(state=tk.NORMAL)  # Make the text writable so we can insert output
     text_area.pack(padx=10, pady=10, expand=True, fill='both')  # Allow the text area to expand and fill the window
 
@@ -249,18 +278,16 @@ def summary_command():
     else:
         messagebox.showwarning("No File", "No file is currently open or saved.")
 
-
-#Cusor place text formation and keep selected checbox in menu popup window
 def toggle_figure(value, var, state_dict):
-    cursor_index = textbox.index(tk.INSERT)
+    cursor_index = text_box.index(tk.INSERT)
     if var.get():
-        textbox.insert(cursor_index, value + "\n")
+        text_box.insert(cursor_index, value + "\n")
         state_dict[value] = True  # Mark as selected
     else:
-        start_index = textbox.search(value, "1.0", tk.END)
+        start_index = text_box.search(value, "1.0", tk.END)
         if start_index:
             end_index = f"{start_index}+{len(value)+1}c"
-            textbox.delete(start_index, end_index)
+            text_box.delete(start_index, end_index)
         state_dict[value] = False  # Mark as deselected
 
 #Creating menu popup window for  values
@@ -308,47 +335,8 @@ def create_checkboxes(window_title, value_dict, state_key):
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
 
-#Search andd replace
-def search_and_replace():
-    search_window = tk.Toplevel(root)
-    search_window.title("Search and Replace")
-    
-    tk.Label(search_window, text="Find:").grid(row=0, column=0, padx=5, pady=5)
-    search_entry = tk.Entry(search_window, width=30)
-    search_entry.grid(row=0, column=1, padx=5, pady=5)
-    
-    tk.Label(search_window, text="Replace:").grid(row=1, column=0, padx=5, pady=5)
-    replace_entry = tk.Entry(search_window, width=30)
-    replace_entry.grid(row=1, column=1, padx=5, pady=5)
-    
-    def find():
-        textbox.tag_remove("highlight", "1.0", tk.END)
-        search_text = search_entry.get()
-        if search_text:
-            idx = "1.0"
-            while True:
-                idx = textbox.search(search_text, idx, nocase=1, stopindex=tk.END)
-                if not idx:
-                    break
-                end_idx = f"{idx}+{len(search_text)}c"
-                textbox.tag_add("highlight", idx, end_idx)
-                idx = end_idx
-            textbox.tag_config("highlight", background="yellow")
-    
-    def replace():
-        search_text = search_entry.get()
-        replace_text = replace_entry.get()
-        content = textbox.get("1.0", tk.END)
-        new_content = content.replace(search_text, replace_text)
-        textbox.delete("1.0", tk.END)
-        textbox.insert(tk.END, new_content)
-        find()
-
-    tk.Button(search_window, text="Find", command=find).grid(row=2, column=0, padx=5, pady=5)
-    tk.Button(search_window, text="Replace", command=replace).grid(row=2, column=1, padx=5, pady=5)
-
 #Figure of merits Key and values
-def FOM_checkboxes():
+def FOM():
     figure_values = {
         "Minimize plasma major radius": "minmax = 1 *Minimize plasma major radius", # Figure of merits
         "Minimize neutron wall load": "minmax = 3 *Minimize neutron wall load", # Figure of merits
@@ -384,7 +372,7 @@ def FOM_checkboxes():
     create_checkboxes("Select Figures-of-Merit", figure_values, 'FOM')
 
 #FConstraint Key and values
-def Constraint_checkboxes():
+def Constraint():
     constraint_values = {
         "Beta (itv 5)": "icc = 1 *Beta (itv 5)", # Constraints
         "Global power balance (itv 10,1,2,3,4,6,11)": "icc = 2 *Global power balance (itv 10,1,2,3,4,6,11)", # Constraints
@@ -454,7 +442,7 @@ def Constraint_checkboxes():
     create_checkboxes("Select Constraint Value", constraint_values, 'Constraint')
 
 #Ietarion Function Encapsule
-def Iteration_checkboxes():
+def Iteration():
     """Display a list of checkboxes for the user to select Iteration, with a scrollbar."""
     Iteration_values = {
         "aspect ratio": "ixc = 1 *aspect \nboundu(1)=10.00D0 \nboundl(1)=1.100D0", #Iterations 
@@ -663,7 +651,7 @@ def on_select_1d():
             sweep_list = sweep_values.split(',')
             isweep = len(sweep_list)
             result_text = f"nsweep = {nsweep}\nsweep = {sweep_values}\nisweep = {isweep}\n"
-            textbox.insert(tk.END, result_text)
+            text_box.insert(tk.END, result_text)
         dialog.destroy()
 
     tk.Button(dialog, text="Submit", command=submit).pack(pady=10)
@@ -752,13 +740,17 @@ def on_select_2d() :
             sweep_2_list = sweep_2_values.split(',')
             isweep_2 = len(sweep_2_list)
             result_text = f"nsweep = {nsweep}\nsweep = {sweep_values}\nisweep = {isweep}\nnsweep_2 = {nsweep_2}\nsweep_2 = {sweep_2_values}\nisweep_2 = {isweep_2}\n"
-            textbox.insert(tk.END, result_text)
+            text_box.insert(tk.END, result_text)
         dialog.destroy()
 
     tk.Button(dialog, text="Submit", command=submit).pack(pady=10)
 
+def Scan_Module(event):
+    submenu.post(event.x_root, event.y_root)
+
+
 #Build Variables Encapsule
-def Build_checkboxes():
+def Build():
     Build_values = {
         "Minimum minor radius (m)":"aplasmin=0.25         *minimum minor radius (m)",  #BUILD
          "Inboard blanket box manifold thickness (m) (blktmodel>0)":"blbmith=0.17         *inboard blanket box manifold thickness (m) (blktmodel>0)",  #BUILD
@@ -812,7 +804,7 @@ def Build_checkboxes():
     create_checkboxes("Select Build Variable", Build_values, 'Build')
 
 #Constraint Variables Encapsule
-def Constraint_variables_checkboxes():
+def Constraint_variables():
     """Display a list of checkboxes for the user to select Constraint Variables, with a scrollbar."""
     Constraint_variables_values = {
          "Minimum auxiliary power (MW) (constraint equation 40)":"auxmin=0.1     *minimum auxiliary power (MW) (constraint equation 40)", #Constraint variables
@@ -906,7 +898,7 @@ def Constraint_variables_checkboxes():
     create_checkboxes("Select Constraint Variables", Constraint_variables_values, 'Constraint_variable')
 
 #Cost Variables Encapsule
-def Cost_variables_checkboxes():
+def Cost_variables():
     """Display a list of checkboxes for the user to select Cost Variables, with a scrollbar."""
     Cost_variables_values = {
         "Allowable first wall/blanket neutron fluence (MW-yr/m2) (blktmodel=0)":"abktflnc=5     *allowable first wall/blanket neutron fluence (MW-yr/m2) (blktmodel=0)",  #COST
@@ -1067,7 +1059,7 @@ def Cost_variables_checkboxes():
     
 
 #Current Drive Function
-def Current_drive_variables_checkboxes():
+def Current_drive_variables():
     """Display a list of checkboxes for the user to select Current Drive Variables, with a scrollbar."""
     Current_drive_variables_values = {
          "Width of neutral beam duct where it passes between the TF coils (m) ":"beamwd=0.58     *width of neutral beam duct where it passes between the TF coils (m) ",  #Current Drive
@@ -1094,7 +1086,7 @@ def Current_drive_variables_checkboxes():
     create_checkboxes("Select Current Drive", Current_drive_variables_values, 'Current_drive')
 
 #Divertor Variable Function
-def Divertor_variables_checkboxes():
+def Divertor_variables():
     """Display a list of checkboxes for the user to select Divertor Variables, with a scrollbar."""
     Divertor_values = {
          "Angle of incidence of field line on plate (rad)":"anginc=0.262     *angle of incidence of field line on plate (rad)",  #Divertor
@@ -1133,7 +1125,7 @@ def Divertor_variables_checkboxes():
     create_checkboxes("Select Divertor Variable", Divertor_values, 'Divertor_values')
 
 #Fwbs Encapsule Function
-def Fwbs_variables_checkboxes():
+def Fwbs_variables():
     """Display a list of checkboxes for the user to select Fwbs Variables, with a scrollbar."""
     Fwbs_values = {
         "Full power blanket lifetime (years)":"bktlife=     *Full power blanket lifetime (years)",  #Fwbs 
@@ -1406,7 +1398,7 @@ def Fwbs_variables_checkboxes():
     create_checkboxes("Select Fwbs Values", Fwbs_values, 'Fwbs')
 
 #Heat Transport Variables
-def Heat_transport_variables_checkboxes():
+def Heat_transport_variables():
     """Display a list of checkboxes for the user to select Heat Transport, with a scrollbar."""
     Heat_transport_values = {
          "Base plant electric load (W)":"baseel=5000000     *base plant electric load (W)",  #Heat Transport
@@ -1475,7 +1467,7 @@ def Heat_transport_variables_checkboxes():
     create_checkboxes("Select Heat Transport Values", Heat_transport_values, 'Heat_transport')
 
 #Impurity Radiation Variables
-def Impurity_Radiation_variables_checkboxes():
+def Impurity_Radiation_variables():
     """Display a list of checkboxes for the user to select Impurity Radiation, with a scrollbar."""
     Impurity_Radiation_values = {
         "Coreradius /0.6/ : normalised radius defining the 'core' region":"coreradius=0.6     *coreradius /0.6/ : normalised radius defining the 'core' region",  #Impurity Radiation
@@ -1485,7 +1477,7 @@ def Impurity_Radiation_variables_checkboxes():
     create_checkboxes("Select Impurity Radiation", Impurity_Radiation_values, 'IR')
 
 #Numerics Variables
-def Numerics_checkboxes():
+def Numerics():
     """Display a list of checkboxes for the user to select Numerics Variables, with a scrollbar."""
     Numerics_values = {
         "Ioptimz /1/ : code operation switch:":"ioptimz=1     *ioptimz /1/ : code operation switch:",  #Numerics
@@ -1498,7 +1490,7 @@ def Numerics_checkboxes():
     create_checkboxes("Select Numerics Values", Numerics_values, 'Numerics')
 
 #CS/Pf coil Variables
-def CS_pfcoil_variables_checkboxes():
+def CS_pfcoil_variables():
     """Display a list of checkboxes for the user to select CS_pfcoil, with a scrollbar."""
     CS_pfcoil_values = {
         "Maximum number of groups of PF coils":"ngrpmx=10     *maximum number of groups of PF coils",  #cs/pf coil
@@ -1652,7 +1644,7 @@ def CS_pfcoil_variables_checkboxes():
     create_checkboxes("Select CS/pf Coil", CS_pfcoil_values, 'CS_pf')
 
 #Physics Variables
-def Physics_checkboxes():
+def Physics():
     """Display a list of checkboxes for the user to select Physics Variables, with a scrollbar."""
     Physics_values = {
         "Current profile index (calculated from q_0, q if iprofile=1)":"alphaj=1     *current profile index (calculated from q_0, q if iprofile=1)",  #Physics
@@ -1730,7 +1722,7 @@ def Physics_checkboxes():
     create_checkboxes("Select Physics Values", Physics_values, 'Physics')
 
 #Pulse Variables
-def Pulse_checkboxes():
+def Pulse():
     """Display a list of checkboxes for the user to select Pulse Variables, with a scrollbar."""
     Pulse_values = {
         "first wall bulk coolant temperature (C)":"bctmp=320     *first wall bulk coolant temperature (C)",  # Pulse
@@ -1742,7 +1734,7 @@ def Pulse_checkboxes():
     create_checkboxes("Select Pulse Values", Pulse_values, 'Pulse')
 
 #Tf Coil Variables
-def Tfcoil_checkboxes():
+def Tfcoil():
     """Display a list of checkboxes for the user to select Tfcoil, with a scrollbar."""
     Tfcoil_values = {
         "External case area per coil (inboard leg) (m2)":"acasetf=     *external case area per coil (inboard leg) (m2)",   #tfcoil
@@ -2023,51 +2015,122 @@ def Tfcoil_checkboxes():
     }
     create_checkboxes("Select Tfcoil Value", Tfcoil_values, 'Tf_coil')
 
-def setup_menu(root):
-    menu = tk.Menu(root)
-    root.config(menu=menu)
+def new2_simple_ribbon():
+    """Create a simple ribbon-like interface with buttons wrapping to new lines."""
+    if hasattr(root, 'ribbon_frame') and root.ribbon_frame.winfo_exists():
+        root.ribbon_frame.destroy()
+    else:
+        if hasattr(root, 'ribbon_frame'):
+            root.ribbon_frame.destroy()
 
-    file_menu = tk.Menu(menu, tearoff=0)
-    menu.add_cascade(label="File", menu=file_menu)
-    file_menu.add_command(label="Open", command=open_file)
-    file_menu.add_command(label="Save", command=save)
-    file_menu.add_command(label="Save As", command=save_as)
-    file_menu.add_separator()
-    file_menu.add_command(label="Search and Replace", command=search_and_replace)
-    file_menu.add_separator()
-    file_menu.add_command(label="Exit", command=root.quit)
+        # Ribbon Frame
+        ribbon_frame = tk.Frame(root, bg="lightgray", padx=5, pady=5)
+        ribbon_frame.pack(fill=tk.X, side=tk.TOP, before=text_box)
 
-    # Directly opens a window for Figure of Merit selection with checkboxes
-    menu.add_command(label="Figure-of-Merit", command=FOM_checkboxes)
-    menu.add_command(label="Constraint", command=Constraint_checkboxes)
-    menu.add_command(label="Iteration", command=Iteration_checkboxes)
+        # Left arrow button for scrolling left
+        left_arrow = tk.Button(ribbon_frame, text="<", command=lambda: canvas.xview_scroll(-1, 'units'), padx=5, pady=2)
+        left_arrow.pack(side=tk.LEFT, fill=tk.Y)
 
-    module_menu = tk.Menu(menu, tearoff=0)
-    menu.add_cascade(label="Scan Module", menu=module_menu)
-    module_menu.add_command(label="1D", command=on_select_1d)
-    module_menu.add_command(label="2D", command=on_select_2d)
+        # Scrollable Canvas to hold the ribbon content
+        canvas = tk.Canvas(ribbon_frame, bg="lightgray", height=50)
+        canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-    
-    menu.add_command(label="Build", command=Build_checkboxes)
-    menu.add_command(label="Constraint Variables", command=Constraint_variables_checkboxes)
-    menu.add_command(label="Cost Variables", command=Cost_variables_checkboxes)
-    menu.add_command(label="Current Drive", command=Current_drive_variables_checkboxes)
-    menu.add_command(label="Divertor Variables", command=Divertor_variables_checkboxes)
-    menu.add_command(label="Fwbs Variables", command=Fwbs_variables_checkboxes)
-    menu.add_command(label="Heat Transport", command=Heat_transport_variables_checkboxes)
-    menu.add_command(label="Impurity Radiation", command=Impurity_Radiation_variables_checkboxes)
-    menu.add_command(label="Numerics", command=Numerics_checkboxes)
-    menu.add_command(label="CS_pfcoil", command=CS_pfcoil_variables_checkboxes)
-    menu.add_command(label="Physics Variables", command=Physics_checkboxes)
-    menu.add_command(label="Pulse Variables", command=Pulse_checkboxes)
-    menu.add_command(label="Tfcoil Variables", command=Tfcoil_checkboxes)
+        # Buttons Container inside the canvas
+        button_container = tk.Frame(canvas, bg="lightgray")
+        canvas.create_window((0, 0), window=button_container, anchor="nw")
+
+        # Right arrow button for scrolling right
+        right_arrow = tk.Button(ribbon_frame, text=">", command=lambda: canvas.xview_scroll(1, 'units'), padx=5, pady=2)
+        right_arrow.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Add Buttons
+        button_data = [
+            ("Figure-of-Merit", FOM),
+            ("Constraint", Constraint),
+            ("Iteration", Iteration),
+            ("Build", Build),
+            ("Constraint Variable", Constraint_variables),
+            ("Cost Variables", Cost_variables),
+            ("Current Drive", lambda: print("Current Drive clicked")),
+            ("Divertor Variables", Divertor_variables),
+            ("Fwbs Variables", Fwbs_variables),
+            ("Heat Transport", Heat_transport_variables),
+            ("Impurity Radiation", Impurity_Radiation_variables),
+            ("Numerics", Numerics),
+            ("CS_pfcoil", CS_pfcoil_variables),
+            ("Physics Variables", Physics),
+            ("Pulse Variables", Pulse),
+            ("Tfcoil Variables", Tfcoil),
+            ("Scan Module", None),
+        ]
+
+        # Create submenu for Scan Module
+        global submenu
+        submenu = tk.Menu(root, tearoff=0)
+        submenu.add_command(label="1D", command=on_select_1d)
+        submenu.add_command(label="2D", command=on_select_2d)
+
+        # Add buttons to the button_container
+        for text, command in button_data:
+            if text == "Scan Module":
+                button = tk.Button(button_container, text=text, bg="white", padx=10, pady=5)
+                button.bind("<Button-1>", Scan_Module)  # Bind left click to show submenu
+            else:
+                button = tk.Button(button_container, text=text, command=command, bg="white", padx=10, pady=5)
+            button.pack(side=tk.LEFT, padx=5, pady=5)
+
+        # Update Scroll Region
+        def on_configure(event):
+            canvas.configure(scrollregion=canvas.bbox("all"))
+
+        button_container.bind("<Configure>", on_configure)
+
+        # Store reference to ribbon_frame
+        root.ribbon_frame = ribbon_frame
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Initialize main application window
 root = tk.Tk()
-#img=PhotoImage(file='E:\Acadmic Project\Logo.png')
-#root.iconphoto(False,img)
-root.title("Fusion Reactor System Code")
+root.title("Fusion System GUI")
+
+root.attributes('-zoomed', True)  # Works for Linux in most cases
+root.geometry("800x600")
 
 def update_checkbox_states(root):
     """Update checkbox states based on textbox content."""
@@ -2075,7 +2138,7 @@ def update_checkbox_states(root):
         state_dict = checkbox_states[state_key]
         for key, value in state_dict.items():
             if value:
-                if key not in textbox.get("1.0", tk.END).strip():
+                if key not in text_box.get("1.0", tk.END).strip():
                     state_dict[key] = False
                     for widget in root.winfo_children():
                         if isinstance(widget, tk.Toplevel):
@@ -2089,27 +2152,53 @@ def update_checkbox_states(root):
                                                         checkbox.deselect()
     root.after(100, lambda: update_checkbox_states(root))  # Call this function again after 100ms
 
-# Bind 'Ctrl+F' for Find and 'Ctrl+H' for Replace to the search_and_replace function
-root.bind('<Control-f>', handle_shortcut)
-root.bind('<Control-h>', handle_shortcut)
 
 # Call the update_checkbox_states function initially
 update_checkbox_states(root)
 
-# Create a Frame to hold the Text widget and Scrollbar
-frame = tk.Frame(root)
-frame.pack(fill="both", expand=True)
+# Global variables
+current_file_path = None
+night_mode = False
 
-# Create the Text widget
-textbox = Text(frame, height=30, width=100, wrap="word", font=("Arial", font_size))
-textbox.pack(side="left", fill="both", expand=True)
+# Create menu bar
+menu_bar = tk.Menu(root)
+
+# 'File' menu
+file_menu = tk.Menu(menu_bar, tearoff=0)
+file_menu.add_command(label="Open File", command=open_file)
+file_menu.add_command(label="Save", command=save)
+file_menu.add_command(label="Save As", command=save_as)
+file_menu.add_separator()
+file_menu.add_command(label="Exit", command=root.quit)
+menu_bar.add_cascade(label="File", menu=file_menu, underline=0)
+
+# 'Edit' menu
+edit_menu = tk.Menu(menu_bar, tearoff=0)
+edit_menu.add_command(label="Undo", command=undo_action)
+edit_menu.add_command(label="Redo", command=redo_action)
+edit_menu.add_command(label="Find", command=find_text)
+edit_menu.add_command(label="Find & Replace", command=find_and_replace)
+edit_menu.add_command(label="Zoom In", command=zoom_in)
+edit_menu.add_command(label="Zoom Out", command=zoom_out)
+menu_bar.add_cascade(label="Edit", menu=edit_menu, underline=0)
+
+# 'View' menu
+view_menu = tk.Menu(menu_bar, tearoff=0)
+view_menu.add_checkbutton(label="Night Mode", command=toggle_night_mode)
+menu_bar.add_cascade(label="View", menu=view_menu, underline=0)
+
+# 'Variables' menu
+menu_bar.add_command(label="Variables", command=new2_simple_ribbon)
+
+# Configure the menu bar
+root.config(menu=menu_bar)
+
+# Create a scrollable text box
+text_box = ScrolledText(root, wrap=tk.WORD, font=("Arial", 12), fg="black", insertbackground="black")
+text_box.pack(expand=True, fill=tk.BOTH)
+text_box.edit_modified(False)
 
 
-# Create the Scrollbar and attach it to the Text widget
-scrollbar = tk.Scrollbar(frame, command=textbox.yview)
-scrollbar.pack(side="right", fill="y")
-
-textbox.config(yscrollcommand=scrollbar.set)
 
 # Create a footer frame and add the Execute button
 footer = tk.Frame(root)
@@ -2121,7 +2210,10 @@ summery_button.pack(side="right", padx=10, pady=10)
 execute_button = tk.Button(footer, text="Execute", command=execute_command)
 execute_button.pack(side="right", padx=10, pady=10)
 
-setup_menu(root)
 
+
+
+
+
+# Run the application
 root.mainloop()
-
