@@ -84,8 +84,21 @@ Numerics, Heat Transport, and More: Fine-tune advanced parameters.
 - To add or modify parameters, update the respective dictionaries in the source code. For example, to add a new constraint, edit the constraint_values dictionary in the Constraint_checkboxes() function.
 
 ## Shortcuts
-- **Ctrl+F**: Open the search window.
-- **Ctrl+H**: Open the replace window.
+- **Ctrl + C: Copy selected items.
+- **Ctrl + X: Cut selected items.
+- **Ctrl + V: Paste copied or cut items.
+- **Ctrl + Z: Undo the previous action.
+- **Ctrl + Y: Redo the previous action.
+- **Ctrl + F: Open the search window to find text or items.
+- **Ctrl + H: Open the replace window to find and replace text.
+- **Ctrl + S: Save the current file or document.
+- **Ctrl + Shift + S: Save as the current file or document.
+- **Ctrl + O: Open an existing file or document.
+- **Ctrl + Q: Quit or exit the application.
+- **Ctrl + "+": Zoom in the text.
+- **Ctrl + "-": Zoom out the text.
+
+
   
 ## Contributing
 Contributions are welcome! To contribute:
