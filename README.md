@@ -5,7 +5,7 @@ This Python program provides a graphical user interface (GUI) to manage a fusion
 
 PROCESS is the reactor systems code at the ([UK Atomic Energy Authority](https://ccfe.ukaea.uk/)). Here are the ([PROCESS docs](https://ukaea.github.io/PROCESS/)) and ([Webpage](https://ccfe.ukaea.uk/resources/process/)).
 
-
+![image alt](https://github.com/nitiljakhar/Fusion-Reactor-System-Code/blob/99246873ad3465b10078f8322d0e1c660e64968b/Images/Screenshot%202024-12-24%20153300.png)
 ## Table of Contents
 1. [Overview](#overview)
 2. [Features](#features)
