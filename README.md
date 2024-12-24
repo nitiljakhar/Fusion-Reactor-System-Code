@@ -96,6 +96,6 @@ Contributions are welcome! To contribute:
 
 ## Founder
 ### Nitil Jakhar
-**E-mail**: [nitiljakhar1904jacs@gmail.com](mailto:nitiljakhar1904jacs@gmail)
-**Computer Science Engineer**
-**Chandigarh University, Mohali, India**
+- **Email:** [nitiljakhar1904jacs@gmail.com](mailto:nitiljakhar1904jacs@gmail)
+- **Degree:** Computer Science Engineer
+- **University:** Chandigarh University, Mohali, India
