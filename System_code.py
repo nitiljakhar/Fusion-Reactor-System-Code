@@ -65,22 +65,12 @@ def toggle_night_mode():
         night_mode = True
 
 def undo_action():
-    """Undo the last action in the text box."""
-    try:
-        if text_box.edit_modified():
-            text_box.edit_undo()
-            text_box.edit_modified(False)
-        else:
-            messagebox.showinfo("Info", "Nothing to undo.")
-    except Exception as e:
-        messagebox.showinfo("Info", f"Undo error: {e}")
+    
+        text_box.edit_undo()
 
 def redo_action():
-    """Redo the last undone action in the text box."""
-    try:
+    
         text_box.edit_redo()
-    except Exception:
-        messagebox.showinfo("Info", "Nothing to redo.")
 
 def find_text():
     """Find text in the text box."""
@@ -290,12 +280,16 @@ def toggle_figure(value, var, state_dict):
             text_box.delete(start_index, end_index)
         state_dict[value] = False  # Mark as deselected
 
-#Creating menu popup window for  values
 def create_checkboxes(window_title, value_dict, state_key):
     """Generic function to create a checkbox window, supporting submenus displayed inline."""
     checkbox_window = tk.Toplevel(root)
     checkbox_window.title(window_title)
     checkbox_window.geometry("500x400")
+
+    # Make the pop-up modal
+    checkbox_window.transient(root)  # Associate pop-up with the main window
+    checkbox_window.grab_set()  # Disable interaction with the main window
+    checkbox_window.attributes("-topmost", True)  # Ensure it stays on top
 
     canvas = tk.Canvas(checkbox_window)
     scrollbar = tk.Scrollbar(checkbox_window, orient="vertical", command=canvas.yview)
@@ -2024,7 +2018,7 @@ def new2_simple_ribbon():
             root.ribbon_frame.destroy()
 
         # Ribbon Frame
-        ribbon_frame = tk.Frame(root, bg="lightgray", padx=5, pady=5)
+        ribbon_frame = tk.Frame(root, bg="pink", padx=5, pady=5)
         ribbon_frame.pack(fill=tk.X, side=tk.TOP, before=text_box)
 
         # Left arrow button for scrolling left
@@ -2089,45 +2083,9 @@ def new2_simple_ribbon():
         root.ribbon_frame = ribbon_frame
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Initialize main application window
 root = tk.Tk()
-root.title("Fusion System GUI")
+root.title("Fusion Reactor System Code ")
 
 root.attributes('-zoomed', True)  # Works for Linux in most cases
 root.geometry("800x600")
@@ -2194,11 +2152,15 @@ menu_bar.add_command(label="Variables", command=new2_simple_ribbon)
 root.config(menu=menu_bar)
 
 # Create a scrollable text box
-text_box = ScrolledText(root, wrap=tk.WORD, font=("Arial", 12), fg="black", insertbackground="black")
+text_box = ScrolledText(root, wrap=tk.WORD, font=("Arial", 12), undo=True, fg="black", insertbackground="black")
 text_box.pack(expand=True, fill=tk.BOTH)
-text_box.edit_modified(False)
 
-
+# Ensure proper undo/redo checkpoints
+def track_text_changes(event=None):
+    text_box.edit_separator()
+    
+text_box.bind("<KeyRelease>", track_text_changes)
+text_box.bind("<Delete>", track_text_changes)
 
 # Create a footer frame and add the Execute button
 footer = tk.Frame(root)
@@ -2211,9 +2173,20 @@ execute_button = tk.Button(footer, text="Execute", command=execute_command)
 execute_button.pack(side="right", padx=10, pady=10)
 
 
-
+# Bind shortcuts
+root.bind("<Control-o>", lambda event: open_file())
+root.bind("<Control-s>", lambda event: save())
+root.bind("<Control-Shift-S>", lambda event: save_as())
+root.bind("<Control-q>", lambda event: root.quit())
+root.bind("<Control-z>", lambda event: undo_action())
+root.bind("<Control-y>", lambda event: redo_action())
+root.bind("<Control-f>", lambda event: find_text())
+root.bind("<Control-h>", lambda event: find_and_replace())
+root.bind("<Control-plus>", lambda event: zoom_in())
+root.bind("<Control-minus>", lambda event: zoom_out())
 
 
 
 # Run the application
 root.mainloop()
+
