@@ -1,191 +1,101 @@
 <h1>Fusion Reactor System Code</h1>
-<h3>GUI</h3> 
-This Python program provides a graphical user interface (GUI) to manage a fusion reactor system code. It allows users to select various parameters for different subsystems (like Figures of Merit, Constraints, Build variables, etc.) through an interactive menu and checkboxes. The GUI is built using the Tkinter library.
+<h3> GUI</h3> 
 
- <h2>Features</h2>
- <ul>
-      <li><b>Modular Parameter Selection:</b>
-            <ul>
-                <li>Supports selection for Figures of Merit, Constraints, Build Variables, and more.</li>
-                <li>Enables 1D and 2D scans for input data.
-</li>
-            </ul>
-      </li>
-      <li><b>Search and Replace:</b>
-            <ul>
-                <li>Find specific text and replace it with new values within the main text editor.</li>
-            </ul>
-      </li>
-      <li><b>Scrollable Checkbox Menus:</b>
-            <ul>
-                <li>Parameter selection is available via checkboxes for various modules, allowing easy toggling of options.</li>
-            </ul>
-      </li>
-      <li><b>Dynamic Update:</b>
-            <ul>
-                <li>Updates the state of checkboxes dynamically based on changes in the text box content.</li>
-            </ul>
-      </li>
-      <li><b>Shortcut Support:</b>
-            <ul>
-                <li>Keyboard shortcuts are included for search <code>(Ctrl+F)</code> and replace <code>(Ctrl+H)</code>.</li>
-            </ul>
-      </li>
-      <li><b>Summary and Execute:</b>
-            <ul>
-                <li>Two main buttons are available to summarize selected options and execute the final command.</li>
-            </ul>
-      </li>  
-</ul>
+This Python program provides a graphical user interface (GUI) to manage a fusion reactor system code PROCESS ([https://github.com/ukaea/PROCESS](https://github.com/ukaea/PROCESS)). The GUI simplifies the management of fusion reactor parameters, making the process faster and more accessible.
 
-<h2>Installation</h2>
- <ul>
-      <li><b>Prerequisites:</b>
-            <ul>
-                <li>Python 3.</li>
-                <li>Tkinter library (typically pre-installed with Python)</li>
-            </ul>
-      </li>
-      <li><b>Search and Replace:</b>
-            <ul>
-                <li><code>git clone https://github.com/nitiljakhar/Fusion-Reactor-System-Code.git
-cd Fusion-Reactor-System-Code</code></li>
-            </ul>
-      </li>
-      <li><b>Run the Program:</b>
-            <ul>
-                <li><code>python3 System_code.py</code></li>
-            </ul>
-      </li> 
-</ul>
-<h2>Usage Instructions</h2>
-<h4>Main Menu</h4>
-Once the GUI starts, you'll see a menu bar at the top of the window. Here's what each menu option provides:
-<li><b>File:</b>
-<ul>
-              <li><code>Open</code>: Opens an existing input file.</li>
-              <li><code>Save</code>: Saves the current configuration.</li>
-              <li><code>Save As</code>: Saves the current configuration under a new file name.</li>
-              <li><code>Search and Replace</code>: Opens a window to search for specific text and optionally replace it in the main text box.</li>
-              <li><code>Exit</code>: Closes the application.</li>
-</ul>
-<li><b>Figure-of-Merit:</b>
-<ul>
-              <li>Opens a checkbox window to select the desired Figures-of-Merit (FoM).</li>
-</ul>
-<li><b>Constraint:</b>
-<ul>
-              <li>Opens a window to select constraint values.</li>
-</ul>
-<li><b>Iteration:</b>
-<ul>
-              <li>Opens a window to choose iteration options.</li>
-</ul>
-
-<h4>Scan Module</h4>
-This menu handles sweeping parameters for 1D and 2D scans:
-<li><b>1D:</b>
-<ul>
-              <li>Select a parameter to sweep and enter the values as a comma-separated list.</li>
-</ul>
-<li><b>2D:</b>
-<ul>
-              <li>Choose two parameters to sweep in 2D and enter the values for both as comma-separated lists.</li>
-</ul>
-
-<h4>Variable Selection (Various Modules)</h4>
-The menu also offers various categories to select from:
-<li><b>Build:</b>
-<ul>
-              <li>Opens a menu to select variables related to the build process.</li>
-</ul>
-<li><b>Constraint Variables:</b>
-<ul>
-              <li>Choose constraints for the fusion reactor setup.</li>
-</ul>
-<li><b>Cost Variables:</b>
-<ul>
-              <li>Manage cost-related parameters.</li>
-</ul>
-<li><b>Current Drive:</b>
-<ul>
-              <li>Select options for the current drive system.</li>
-</ul>
-<li><b>Divertor Variables:</b>
-<ul>
-              <li>Configure the divertor subsystem settings.</li>
-</ul>
-<li><b>Fwbs Variables:</b>
-<ul>
-              <li>Handle first wall and blanket structure values.</li>
-</ul>
-<li><b>Heat Transport:</b>
-<ul>
-              <li>Control heat transport-related settings.</li>
-</ul>
-<li><b>Impurity Radiation:</b>
-<ul>
-              <li>Set parameters for impurity radiation in the plasma.</li>
-</ul>
-<li><b>Numerics:</b>
-<ul>
-              <li>Fine-tune numerical parameters for the calculations.</li>
-</ul>
-<li><b>CS/pfcoil Variables:</b>
-<ul>
-              <li>Choose settings for the Central Solenoid (CS) and poloidal field (PF) coils.</li>
-</ul>
-<li><b>Physics Variables:</b>
-<ul>
-              <li>Adjust key physics variables affecting the fusion reactor.</li>
-</ul>
-<li><b>Pulse Variables:</b>
-<ul>
-              <li>Manage pulse-related values.</li>
-</ul>
-<li><b>Tfcoil Variables:</b>
-<ul>
-              <li>Set parameters for the toroidal field (TF) coil.</li>
-</ul>
-
-<h4>Text Box and Scrollbar</h4>
-The main area is a text box where:
-<li>The results of your selections will appear.</li>
-<li>You can manually enter or modify text.</li>
-<li>A vertical scrollbar allows you to navigate the content easily.</li>
-
-<h4>Footer Buttons</h4>
-<li><code>Execute</code>: Executes the DAT file in WSl Command (f'process -i "{file_name}"') .</li>
-<li><code>Summary</code>: Executes WSl Command (f'./plot_proc.py -f "{file_name}_MFILE.DAT"') to open the summery document of the "Execute" command outcomes.</li>
+PROCESS is the reactor systems code at the ([UK Atomic Energy Authority](https://ccfe.ukaea.uk/)). Here are the ([PROCESS docs](https://ukaea.github.io/PROCESS/)) and ([Webpage](https://ccfe.ukaea.uk/resources/process/)).
 
 
-<h2>Detailed Features</h2>
-<b>Checkbox Windows</b>
-<li>Each window, such as for Figures-of-Merit or Constraints, provides a list of checkboxes. You can select or deselect parameters, and the state will be retained when reopening the windows.</li>
-<b>Dynamic Updates</b>
-<li>The application automatically keeps track of selected options and updates them based on the current state of the main text box. This prevents inconsistencies between what is displayed and what is selected.</li>
+## Table of Contents
+1. [Overview](#overview)
+2. [Features](#features)
+3. [Installation](#installation)
+4. [Usage Instructions](#usage-instructions)
+5. [Main Menu Options](#main-menu-options)
+6. [Footer Buttons](#footer-buttons)
+7. [Detailed Features](#detailed-features)
+8. [Customization](#customization)
+9. [Shortcuts](#shortcuts)
+10. [Contributing](#contributing)
+11. [License](#license)
+12. [Founder](#founder)
 
-<b>Search and Replace</b><br>
-The program offers a search and replace feature to quickly modify parameters within the main text area:
-<li><code>Find</code>: Highlights all instances of the searched word.</li>
-<li><code>Replace</code>: Replaces all occurrences of the searched word with the new word.</li>
+---
 
-<h2>Customization</h2>
-<li>To add more Figures of Merit, Constraints, or other parameters, update the respective dictionaries in the code. For example, to add a new constraint, modify the <code>constraint_values</code> dictionary inside <code>Constraint_checkboxes()</code>.</li>
+## Overview
+The Fusion Reactor System GUI provides an interactive interface to manage and configure parameters for the fusion reactor system. It includes modular options for Figures of Merit, Constraints, Build variables, and other essential modules. The GUI is designed for ease of use, featuring menus, checkboxes, and a scrollable text box for displaying configurations and results.
 
-<h2>Shortcuts</h2>
-<li><code>Ctrl + F</code>: Opens the search window to find text in the main text box.</li>
-<li><code>Ctrl + H</code>: Opens the replace window to find and replace text.</li>
+## Features
+- **Modular Parameter Selection**: Easily select Figures of Merit, Constraints, Build Variables, and more.
+- **1D and 2D Parameter Scans**: Configure sweeps for input data.
+- **Search and Replace**: Quickly locate and modify text within the main text editor.
+- **Dynamic Updates**: Checkbox states dynamically update based on the content of the text box.
+- **Shortcut Support**: Includes keyboard shortcuts for common actions (e.g., Ctrl+F for search).
+- **Execute and Summary Commands**: Execute the process and view a summary of results.
+
+## Installation
+
+### Prerequisites
+- Python 3
+- Tkinter library (typically pre-installed with Python)
+
+### Steps to Install
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/nitiljakhar/Fusion-Reactor-System-Code.git
+   cd Fusion-Reactor-System-Code
+2. Run the program:
+   ```bash
+   python3 System_code.py
+
+## Usage Instructions
+### Main Interface
+When the program starts, the GUI displays a main menu bar, a toolbar with buttons for various parameters, a scrollable text box, and footer buttons for "Execute" and "Summary".
 
 
-<h2>Contributing</h2>
-Feel free to fork the repository, make modifications, and send a pull request. Contributions are welcome!
+## Main Menu Options
+### File Menu
+- **Open**: Load an existing input file.
+- **Save**: Save the current configuration.
+- **Save As**: Save the configuration under a new file name.
+- **Search and Replace**: Open a tool to search and replace text.
+- **Exit**: Close the application.
+### Edit Menu
+- Includes options for modifying text or settings in the GUI.
+### View Menu
+- Toggle between modes such as Night Mode.
+### Variables Menu
+- Provides access to parameter selection modules such as Figures of Merit, Constraints, Iteration, Build Variables, and more.
+## Footer Buttons
+- **Execute**: Executes the DAT file using WSL command: f'process -i "{file_name}"'.
+- **Summary**: Displays the summary of results using WSL command: f'./plot_proc.py -f "{file_name}_MFILE.DAT"'.
+## Detailed Features
+### Parameter Selection
+- **Figures of Merit**: Select desired metrics for analysis.
+- **Constraints**: Define limits and constraints for the reactor setup.
+- **Build Variables**: Configure parameters related to the build process.
+Numerics, Heat Transport, and More: Fine-tune advanced parameters.
+### Scrollable Checkbox Menus
+- Navigate through a variety of options using scrollable checkboxes.
+### Search and Replace
+- **Find**: Highlights all matches for the search term.
+- **Replace**: Replaces all instances of a search term with the new input.
+## Customization
+- To add or modify parameters, update the respective dictionaries in the source code. For example, to add a new constraint, edit the constraint_values dictionary in the Constraint_checkboxes() function.
 
-<h2>License</h2>
-This project is licensed under the MIT License.
+## Shortcuts
+- **Ctrl+F**: Open the search window.
+- **Ctrl+H**: Open the replace window.
+  
+## Contributing
+Contributions are welcome! To contribute:
+- Fork the repository.
+- Make modifications.
+- Submit a pull request.
 
-<h2>Founder</h2>
-<b>Nitil Jakhar</b><br>
-<b><code>E-mail</code>: nitiljakhar1904jacs@gmail.com</b><br>
-<b>Computer Science Engineer</b><br>
-<b>Chandigarh University, Mohali, India</b><br>
+
+## Founder
+### Nitil Jakhar
+**E-mail**: [nitiljakhar1904jacs@gmail.com](mailto:nitiljakhar1904jacs@gmail)
+**Computer Science Engineer**
+**Chandigarh University, Mohali, India**
