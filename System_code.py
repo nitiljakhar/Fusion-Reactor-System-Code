@@ -5,6 +5,7 @@ import os
 from tkinter import filedialog, Text, messagebox, simpledialog, ttk
 import subprocess
 import threading
+import webbrowser
 
 #Functionalits of File Command
 #Save File Command Function
