@@ -2207,6 +2207,10 @@ menu_bar.add_cascade(label="View", menu=view_menu, underline=0)
 # 'Variables' menu
 menu_bar.add_command(label="Variables", command=new2_simple_ribbon)
 
+
+#Iformation button
+menu_bar.add_command(label="About", command=show_info)
+
 # Configure the menu bar
 root.config(menu=menu_bar)
 
