@@ -280,6 +280,57 @@ def toggle_figure(value, var, state_dict):
             text_box.delete(start_index, end_index)
         state_dict[value] = False  # Mark as deselected
 
+#About the GUI
+def show_info():
+    """Function to display the message when 'i' button is clicked."""
+    def open_link():
+        webbrowser.open("https://github.com/nitiljakhar/Fusion-Reactor-System-Code")  # Replace with your desired URL
+
+    # Create a popup window
+    popup = tk.Toplevel()
+    popup.title("Information")
+    popup.geometry("300x200")  # Adjust the size of the popup
+
+    # Make the popup a child window of the main GUI window
+    popup.transient(root)  # Attach popup to the root window
+    popup.grab_set()  # Block interaction with the root window until popup is closed
+    popup.attributes("-topmost", False)  # Keep it on top of the GUI, but not above other apps
+
+
+    # Center the popup window on the screen
+    screen_width = popup.winfo_screenwidth()
+    screen_height = popup.winfo_screenheight()
+    window_width = 300
+    window_height = 200
+    x = (screen_width // 2) - (window_width // 2)
+    y = (screen_height // 2) - (window_height // 2)
+    popup.geometry(f"{window_width}x{window_height}+{x}+{y}")
+
+    # Add label with text wrapping (wraplength limits the text width to fit within the popup window)
+    label = tk.Label(
+        popup,
+        text="This Python program provides a graphical user interface (GUI) to manage a fusion reactor system code PROCESS. The GUI simplifies the management of fusion reactor parameters, making the process faster and more accessible.",
+        font=("Arial", 12),
+        wraplength=280,  # Adjust to fit within the popup window
+        justify="center"  # Align text to the left
+    )
+    label.pack(pady=10, padx=10)
+
+    # Add a clickable link
+    link = tk.Label(
+        popup,
+        text="Visit for more information",
+        font=("Arial", 10, "underline"),
+        fg="blue",
+        cursor="hand2",
+    )
+    link.pack(pady=5)
+    link.bind("<Button-1>", lambda e: open_link())
+
+    # Add close button
+    close_button = tk.Button(popup, text="Close", command=popup.destroy)
+    close_button.pack(pady=10)
+    
 def create_checkboxes(window_title, value_dict, state_key):
     """Generic function to create a checkbox window, supporting submenus displayed inline."""
     checkbox_window = tk.Toplevel(root)
@@ -289,6 +340,15 @@ def create_checkboxes(window_title, value_dict, state_key):
     # Make the pop-up modal
     checkbox_window.transient(root)  # Associate pop-up with the main window
     checkbox_window.grab_set()  # Disable interaction with the main window
+
+    # Center the checkbox window on the screen
+    screen_width = checkbox_window.winfo_screenwidth()
+    screen_height = checkbox_window.winfo_screenheight()
+    window_width = 500
+    window_height = 400
+    x = (screen_width // 2) - (window_width // 2)
+    y = (screen_height // 2) - (window_height // 2)
+    checkbox_window.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
     canvas = tk.Canvas(checkbox_window)
     scrollbar = tk.Scrollbar(checkbox_window, orient="vertical", command=canvas.yview)
