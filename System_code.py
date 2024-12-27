@@ -2146,8 +2146,6 @@ def new2_simple_ribbon():
 # Initialize main application window
 root = tk.Tk()
 root.title("Fusion Reactor System Code ")
-
-root.attributes('-zoomed', True)  # Works for Linux in most cases
 root.geometry("800x600")
 
 def update_checkbox_states(root):
