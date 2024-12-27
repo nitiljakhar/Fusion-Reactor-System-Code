@@ -289,7 +289,6 @@ def create_checkboxes(window_title, value_dict, state_key):
     # Make the pop-up modal
     checkbox_window.transient(root)  # Associate pop-up with the main window
     checkbox_window.grab_set()  # Disable interaction with the main window
-    checkbox_window.attributes("-topmost", True)  # Ensure it stays on top
 
     canvas = tk.Canvas(checkbox_window)
     scrollbar = tk.Scrollbar(checkbox_window, orient="vertical", command=canvas.yview)
@@ -2045,7 +2044,7 @@ def new2_simple_ribbon():
             ("Build", Build),
             ("Constraint Variable", Constraint_variables),
             ("Cost Variables", Cost_variables),
-            ("Current Drive", lambda: print("Current Drive clicked")),
+            ("Current Drive", Current_drive_variables),
             ("Divertor Variables", Divertor_variables),
             ("Fwbs Variables", Fwbs_variables),
             ("Heat Transport", Heat_transport_variables),
