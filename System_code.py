@@ -328,9 +328,6 @@ def show_info():
     link.pack(pady=5)
     link.bind("<Button-1>", lambda e: open_link())
 
-    # Add close button
-    close_button = tk.Button(popup, text="Close", command=popup.destroy)
-    close_button.pack(pady=10)
     
 def create_checkboxes(window_title, value_dict, state_key):
     """Generic function to create a checkbox window, supporting submenus displayed inline."""
