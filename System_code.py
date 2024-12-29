@@ -69,10 +69,6 @@ def undo_action():
     
         text_box.edit_undo()
 
-def redo_action():
-    
-        text_box.edit_redo()
-
 def find_text():
     """Find text in the text box."""
     search_term = simpledialog.askstring("Find", "Enter text to find:")
@@ -285,20 +281,28 @@ def toggle_figure(value, var, state_dict):
 def show_info():
     """Function to display the message when 'i' button is clicked."""
     def open_link():
-        webbrowser.open("https://github.com/nitiljakhar/Fusion-Reactor-System-Code")  # Replace with your desired URL
-
+        # Attempt to open the link using subprocess to ensure compatibility
+        url = "https://github.com/nitiljakhar/Fusion-Reactor-System-Code"
+        try:
+            subprocess.run(["xdg-open", url], check=True)  # For Linux
+        except FileNotFoundError:
+            try:
+                subprocess.run(["cmd.exe", "/C", "start", url], check=True)  # For Windows
+            except FileNotFoundError:
+                tk.messagebox.showinfo("Error", "Unable to open the link. Please copy and paste it into your browser.")
+    
     # Create a popup window
     popup = tk.Toplevel()
     popup.title("Information")
-    popup.geometry("300x200")  # Adjust the size of the popup
-
+    popup.geometry("300x200")
+    
+    
     # Make the popup a child window of the main GUI window
     popup.transient(root)  # Attach popup to the root window
     popup.grab_set()  # Block interaction with the root window until popup is closed
     popup.attributes("-topmost", False)  # Keep it on top of the GUI, but not above other apps
 
-
-    # Center the popup window on the screen
+    # Center the popup
     screen_width = popup.winfo_screenwidth()
     screen_height = popup.winfo_screenheight()
     window_width = 300
@@ -307,17 +311,17 @@ def show_info():
     y = (screen_height // 2) - (window_height // 2)
     popup.geometry(f"{window_width}x{window_height}+{x}+{y}")
 
-    # Add label with text wrapping (wraplength limits the text width to fit within the popup window)
+    # Add a label
     label = tk.Label(
         popup,
-        text="This Python program provides a graphical user interface (GUI) to manage a fusion reactor system code PROCESS. The GUI simplifies the management of fusion reactor parameters, making the process faster and more accessible.",
+        text="This Python program provides a GUI to manage a fusion reactor system code. The GUI simplifies the management of fusion reactor parameters, making the process faster and more accessible.",
         font=("Arial", 12),
-        wraplength=280,  # Adjust to fit within the popup window
-        justify="center"  # Align text to the left
+        wraplength=280,
+        justify="center"
     )
     label.pack(pady=10, padx=10)
 
-    # Add a clickable link
+    # Add clickable link
     link = tk.Label(
         popup,
         text="Visit for more information",
@@ -2188,7 +2192,6 @@ menu_bar.add_cascade(label="File", menu=file_menu, underline=0)
 # 'Edit' menu
 edit_menu = tk.Menu(menu_bar, tearoff=0)
 edit_menu.add_command(label="Undo", command=undo_action)
-edit_menu.add_command(label="Redo", command=redo_action)
 edit_menu.add_command(label="Find", command=find_text)
 edit_menu.add_command(label="Find & Replace", command=find_and_replace)
 edit_menu.add_command(label="Zoom In", command=zoom_in)
@@ -2238,7 +2241,6 @@ root.bind("<Control-s>", lambda event: save())
 root.bind("<Control-Shift-S>", lambda event: save_as())
 root.bind("<Control-q>", lambda event: root.quit())
 root.bind("<Control-z>", lambda event: undo_action())
-root.bind("<Control-y>", lambda event: redo_action())
 root.bind("<Control-f>", lambda event: find_text())
 root.bind("<Control-h>", lambda event: find_and_replace())
 root.bind("<Control-plus>", lambda event: zoom_in())
