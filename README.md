@@ -16,9 +16,7 @@ PROCESS is the reactor systems code at the ([UK Atomic Energy Authority](https:/
 7. [Detailed Features](#detailed-features)
 8. [Customization](#customization)
 9. [Shortcuts](#shortcuts)
-10. [Contributing](#contributing)
-11. [License](#license)
-12. [Founder](#founder)
+10. [Author](#Author)
 
 ---
 
@@ -98,16 +96,7 @@ Numerics, Heat Transport, and More: Fine-tune advanced parameters.
 - **Ctrl + "+": Zoom in the text.
 - **Ctrl + "-": Zoom out the text.
 
-
-  
-## Contributing
-Contributions are welcome! To contribute:
-- Fork the repository.
-- Make modifications.
-- Submit a pull request.
-
-
-## Founder
+## Author
 ### Nitil Jakhar
 - **Email:** [nitiljakhar1904jacs@gmail.com](mailto:nitiljakhar1904jacs@gmail)
 - **Degree:** Computer Science Engineer
