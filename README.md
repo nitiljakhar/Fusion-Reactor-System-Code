@@ -86,7 +86,6 @@ Numerics, Heat Transport, and More: Fine-tune advanced parameters.
 - **Ctrl + X: Cut selected items.
 - **Ctrl + V: Paste copied or cut items.
 - **Ctrl + Z: Undo the previous action.
-- **Ctrl + Y: Redo the previous action.
 - **Ctrl + F: Open the search window to find text or items.
 - **Ctrl + H: Open the replace window to find and replace text.
 - **Ctrl + S: Save the current file or document.
