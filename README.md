@@ -42,6 +42,7 @@ The Fusion Reactor System GUI provides an interactive interface to manage and co
    ```bash
    git clone https://github.com/nitiljakhar/Fusion-Reactor-System-Code.git
    cd Fusion-Reactor-System-Code
+####    OR Copy the Phyton file and save as System_code.py in your directory
 2. Run the program:
    ```bash
    python3 System_code.py
