@@ -63,7 +63,7 @@ When the program starts, the GUI displays a main menu bar, a toolbar with button
 - Includes options for modifying text or settings in the GUI.
 ### View Menu
 - Toggle between modes such as Night Mode.
-### Variables Menu
+### Inputs Menu
 - Provides access to parameter selection modules such as Figures of Merit, Constraints, Iteration, Build Variables, and more.
 ## Footer Buttons
 - **Execute**: Executes the DAT file using WSL command: f'process -i "{file_name}"'.
