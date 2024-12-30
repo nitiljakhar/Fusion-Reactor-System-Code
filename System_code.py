@@ -2207,7 +2207,7 @@ view_menu.add_checkbutton(label="Night Mode", command=toggle_night_mode)
 menu_bar.add_cascade(label="View", menu=view_menu, underline=0)
 
 # 'Variables' menu
-menu_bar.add_command(label="Variables", command=new2_simple_ribbon)
+menu_bar.add_command(label="Inputs", command=new2_simple_ribbon)
 
 
 #Iformation button
