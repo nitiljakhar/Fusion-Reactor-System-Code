@@ -68,6 +68,9 @@ def toggle_night_mode():
 def undo_action():
     
         text_box.edit_undo()
+def undo_action():
+    
+        text_box.edit_undo()
 
 def find_text():
     """Find text in the text box."""
@@ -2241,6 +2244,8 @@ root.bind("<Control-s>", lambda event: save())
 root.bind("<Control-Shift-S>", lambda event: save_as())
 root.bind("<Control-q>", lambda event: root.quit())
 root.bind("<Control-z>", lambda event: undo_action())
+root.bind("<Control-r>", lambda event: undo_action())
+root.bind("<Control-y>", lambda event: undo_action())
 root.bind("<Control-f>", lambda event: find_text())
 root.bind("<Control-h>", lambda event: find_and_replace())
 root.bind("<Control-plus>", lambda event: zoom_in())
